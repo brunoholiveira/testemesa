@@ -1,23 +1,50 @@
 ﻿﻿using System;
 
-namespace testeDeMesa
+class Investimento
 {
-    public class Program
+    public double ValorInvestido { get; set; }
+    public double TaxaJuros { get; set; }
+    public Investimento(double valorInvestido, double taxaJuros)
+    {
+        ValorInvestido = valorInvestido;
+        TaxaJuros = taxaJuros / 100;
+    }
+    public double ValorFuturo(int meses)
+    {
+        return ValorInvestido * Math.Pow(1 + TaxaJuros, meses);
+    }
+    public double ResgatarRendimento(int mesResgate)
+    {
+        return ValorFuturo(mesResgate) - ValorInvestido;
+    }
+    public double SaldoLiquidoRestante(int mesResgate, double mesesTotais)
+    {
+        return ValorInvestido * Math.Pow(1 + TaxaJuros, mesesTotais - mesResgate);
+    }
+}
+
+class Program
 {
     static void Main()
     {
-        double[] entradas = {1000, 5500, 12000};
-        double[] taxas = {0.03, 0.0248, 0.02};
-
-        int meses = 8;
-        int dias = 10;
-        double n_periodos = meses + (dias / 30.0);
-
-        for (int i = 0; i < entradas.Length; i++)
+        Investimento[] investimentos = new Investimento[]
         {
-            double valorFuturo = entradas[i] * Math.Pow(1 + taxas[i], n_periodos);
-            Console.WriteLine($"Valor Futuro para entrada {entradas[i]} com taxa {taxas[i] * 100}%: {valorFuturo:F2}");
+            new Investimento(1000, 3),
+            new Investimento(5500, 2.48),
+            new Investimento(12000, 2)
+        };
+
+        double totalMeses = 8 + (10.0 / 30.0); 
+        int mesResgate = 5;
+
+        Console.WriteLine("Valor Presente | Taxa de Juros (%) | Resgate do Rendimento | Saldo Líquido Restante");
+
+        foreach (var investimento in investimentos)
+        {
+            double resgate = investimento.ResgatarRendimento(mesResgate);
+            double saldoRestante = investimento.SaldoLiquidoRestante(mesResgate, totalMeses);
+
+            Console.WriteLine($"{investimento.ValorInvestido}           | {investimento.TaxaJuros * 100:F2}%           | {resgate:F2}                | {saldoRestante:F2}");
         }
     }
-}
 }
