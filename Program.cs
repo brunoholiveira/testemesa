@@ -1,5 +1,4 @@
 ﻿﻿using System;
-
 class Investimento
 {
     public double ValorInvestido { get; set; }
@@ -27,24 +26,24 @@ class Program
 {
     static void Main()
     {
-        Investimento[] investimentos = new Investimento[]
+        List<Investimento> investimentos = new List<Investimento>
         {
             new Investimento(1000, 3),
             new Investimento(5500, 2.48),
             new Investimento(12000, 2)
         };
 
-        double totalMeses = 8 + (10.0 / 30.0); 
+        double totalMeses = 8 + (10.0 / 30.0);
         int mesResgate = 5;
 
-        Console.WriteLine("Valor Presente | Taxa de Juros (%) | Resgate do Rendimento | Saldo Líquido Restante");
+        Console.WriteLine("Valor Investido | Taxa de Juros (%) | Rendimento | Período (a.m.) | Resgate | Saldo Líquido");
 
         foreach (var investimento in investimentos)
         {
-            double resgate = investimento.ResgatarRendimento(mesResgate);
+            double rendimento = investimento.ResgatarRendimento(mesResgate);
             double saldoRestante = investimento.SaldoLiquidoRestante(mesResgate, totalMeses);
 
-            Console.WriteLine($"{investimento.ValorInvestido}           | {investimento.TaxaJuros * 100:F2}%           | {resgate:F2}                | {saldoRestante:F2}");
+            Console.WriteLine($"{investimento.ValorInvestido}           | {investimento.TaxaJuros * 100:F2}%           | {rendimento:F2}      | {totalMeses:F2}           | {rendimento:F2}      | {saldoRestante:F2}");
         }
     }
 }
